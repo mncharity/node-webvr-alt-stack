@@ -1,0 +1,132 @@
+{
+    "trackedDeviceIndex": 0,
+    "pose": {
+        "timeOffset": -101.40600658951101,
+        "qWorldFromDriverRotation": [
+            9.840560844328175e-37,
+            0,
+            0,
+            0
+        ],
+        "vecWorldFromDriverTranslation": [
+            0,
+            0,
+            -1.7931502573270193e-24
+        ],
+        "qDriverFromHeadRotation": [
+            0,
+            0.7253744006156921,
+            -0.6883545517921448,
+            0
+        ],
+        "vecDriverFromHeadTranslation": [
+            0.006630099844187498,
+            0.12146970629692078,
+            -0.007374979555606842
+        ],
+        "vecPosition": [
+            0,
+            0,
+            -2
+        ],
+        "vecVelocity": [
+            0,
+            0,
+            0
+        ],
+        "vecAcceleration": [
+            0,
+            0,
+            0
+        ],
+        "qRotation": [
+            -0.7071067811865476,
+            0.7071067811865476,
+            0,
+            0
+        ],
+        "vecAngularVelocity": [
+            0,
+            0,
+            0
+        ],
+        "vecAngularAcceleration": [
+            0,
+            0,
+            0
+        ],
+        "result": 101,
+        "poseIsValid": false,
+        "willDriftInYaw": false,
+        "shouldApplyHeadModel": false,
+        "deviceIsConnected": true
+    },
+    "properties": {
+        "ModelNumber": "Vive Controller MV",
+        "SerialNumber": "LHR-FF6BBD43",
+        "RenderModelName": "vr_controller_vive_1_5",
+        "WillDriftInYaw": false,
+        "ManufacturerName": "HTC",
+        "AllWirelessDongleDescriptions": "",
+        "DeviceIsWireless": false,
+        "StatusDisplayTransform": [
+            -1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            -1,
+            0,
+            0,
+            -1,
+            0,
+            0
+        ],
+        "BlockServerShutdown": false,
+        "ContainsProximitySensor": false,
+        "DeviceCanPowerOff": false,
+        "DeviceClass": 2,
+        "HasCamera": false,
+        "ReportsTimeSinceVSync": false,
+        "EdidProductID": 34952,
+        "AttachedDeviceId": "",
+        "SupportedButtonsLO": 7,
+        "SupportedButtonsHI": 3,
+        "Axis0Type": 1,
+        "Axis1Type": 3,
+        "Axis2Type": 0,
+        "Axis3Type": 0,
+        "Axis4Type": 0,
+        "ControllerRoleHint": 0
+    },
+    "controllerState": {
+        "unPacketNum": 2,
+        "ulButtonPressedHI": 0,
+        "ulButtonPressedLO": 0,
+        "ulButtonTouchedHI": 0,
+        "ulButtonTouchedLO": 0,
+        "rAxis": [
+            {
+                "x": 0,
+                "y": 0
+            },
+            {
+                "x": 0,
+                "y": 0
+            },
+            {
+                "x": 0,
+                "y": 0
+            },
+            {
+                "x": 0,
+                "y": 0
+            },
+            {
+                "x": 0,
+                "y": 0
+            }
+        ]
+    }
+}

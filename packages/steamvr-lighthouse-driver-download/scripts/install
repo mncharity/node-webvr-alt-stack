@@ -1,0 +1,25 @@
+#!/bin/bash
+
+if [ "$LIGHTHOUSE_DRIVER_DIR" != "" ]; then
+    cp -p $LIGHTHOUSE_DRIVER_DIR/driver_lighthouse.so files/
+    cp -p $LIGHTHOUSE_DRIVER_DIR/libaitcamlib.so files/
+fi
+
+if [ -f files/driver_lighthouse.so ]; then
+    scripts/check-files files && exit 0
+fi
+
+echo
+echo "I'm about to try downloading and running SteamCMD again(?),"
+echo "to download the device driver files."
+echo
+echo "If you already did this, maybe you forgot to set LIGHTHOUSE_DRIVER_DIR ?"
+echo
+echo -n "Press ENTER to proceed: "
+read
+echo
+
+mkdir tmp
+scripts/attempt-steamcmd tmp || scripts/attempt-sideload tmp || exit 1
+scripts/check-files tmp || exit 1
+cp -p tmp/driver_lighthouse.so tmp/libaitcamlib.so files/ || exit 1

@@ -1,0 +1,12 @@
+{
+  "private": true,
+  "name": "steamvr-lighthouse-driver-download",
+  "version": "0.0.0",
+  "description": "Download a working SteamVR OpenVR lighthouse driver",
+  "author": "Mitchell N Charity <mncharity@vendian.org>",
+  "license": "MIT",
+  "scripts": {
+    "clean": "rm -rf tmp tmpSteam",
+    "install": "scripts/install"
+  }
+}

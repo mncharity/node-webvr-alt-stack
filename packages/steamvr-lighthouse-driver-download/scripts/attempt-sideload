@@ -1,0 +1,10 @@
+#!/bin/bash
+
+outputdir="$1"; shift
+if [ ! -d "$outputdir" ]; then
+    echo "Usage: $0 OUTPUTDIR" >&2
+    exit 1
+fi
+
+curl http://www.clarifyscience.info/assets/250823_2825382862669742424/libaitcamlib.so -o "${outputdir}/libaitcamlib.so" || exit 1
+curl http://www.clarifyscience.info/assets/250823_2825382862669742424/driver_lighthouse.so -o "${outputdir}/driver_lighthouse.so" || exit 1

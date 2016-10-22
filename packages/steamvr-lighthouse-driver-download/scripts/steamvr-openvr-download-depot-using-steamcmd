@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# See https://developer.valvesoftware.com/wiki/SteamCMD
+# Especially the security considerations - that's why appid is hardwired.
+
+appid=250820 # SteamVR
+
+if [ ! "$#" -eq 4 ]; then
+   echo "Usage: $0: STEAMUSERNAME TMPDIR DEPOTID MANIFESTID" >&2
+   exit 1
+fi
+username="$1";shift
+tmpdir="$1";shift
+depotid="$1";shift
+manifestid="$1";shift
+
+# Change $HOME to avoid touching the user's real steam installation.
+if [[ $tmpdir =~ ^~ ]]; then
+    echo "TMPDIR "${tmpdir}" must not be relative to HOME."
+    exit 1
+fi
+export HOME=$tmpdir
+
+if [ ! -d $tmpdir ]; then
+    echo "## Creating directory: ${tmpdir}"
+    mkdir $tmpdir || exit 1
+fi
+
+if [ ! -f $tmpdir/steamcmd.sh ]; then
+    echo "## Getting SteamCMD ..."
+    echo
+    (cd $tmpdir && (curl -sqL 'https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz' | tar zxvf -)) || exit 1
+    echo
+fi
+
+steamdir=$tmpdir/`basename "${tmpdir}"`
+if [ ! -d $steamdir/Steam ]; then
+    echo "## Getting Steam ..."
+    echo "## A pause at 'Checking for available updates' is normal."
+    echo
+    (cd $tmpdir && ./steamcmd.sh +quit) || exit 1
+    echo
+fi
+
+echo "## Using SteamCMD to download"
+echo "##  {appId:${appid}, deoptId:${depotid}, manifestId:${manifestid}}"
+echo "##  A pause at 'Checking for available updates' is normal."
+echo
+echo 
+
+(cd $tmpdir && ./steamcmd.sh '+login' "$username" '+app_license_request' "$appid" '+download_depot' "$appid" "$depotid" "$manifestid" '+quit')
+[ $? -eq 0 ] || exit 1
+
+echo
+echo "## Done."

@@ -1,0 +1,50 @@
+Let's first try to see your Vive controllers and/or display:
+<p/>
+<div id="status"></div>
+<p/>
+If your controllers and/or display appear above, you can play with demos as described in the README.
+
+<script>
+  function strVec (vec) {
+    if (vec instanceof Float32Array) vec = Array.from(vec); //Chromium bug.
+    return "&lt;"+ vec.map(function(v){
+      return v.toFixed(2)}).join(",") +"&gt;";
+  }
+
+  function update () {
+    var gamepads = navigator.getGamepads();
+    var status = "";
+    status += "Gamepads: ";
+    if(gamepads && gamepads.length > 1) {
+      status += (gamepads.length -1) + ": ";
+      status += gamepads.slice(1).map(function(gamepad) {
+        var where = strVec([]);
+        if (gamepad.pose && gamepad.pose.position) {
+          where = strVec(gamepad.pose.position);
+        }
+        return " ("+gamepad.index+") "+ gamepad.id + where;
+      }).join(", ");
+    }
+    else {
+      status += "not seen?"
+    }
+    document.getElementById("status").innerHTML = status;
+    navigator.getVRDisplays().then(function(ds){
+      var dstatus = "<p/>VRDisplay: ";
+      if (ds < 1) {
+        dstatus += "not seen?";
+      } else {
+        var pose = ds[0].getPose();
+        if (pose.position) {
+          dstatus += "xyz"+strVec(pose.position);
+          dstatus += " xyzw"+strVec(pose.orientation||[]);
+        } else {
+          dstatus += "no pose yet";
+        }
+      }
+      document.getElementById("status").innerHTML += dstatus;
+    });
+    setTimeout(update,200);
+  }
+  update();
+</script>

@@ -1,0 +1,27 @@
+{
+  "private": true,
+  "name": "steamvr-lighthouse-driver-gamepads",
+  "version": "0.0.0",
+  "description": "HTC Vive tracking and input, in WebVR gamepad format",
+  "author": "Mitchell N Charity <mncharity@vendian.org>",
+  "license": "MIT",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "node examples/dump.js",
+    "test": "mocha"
+  },
+  "dependencies": {
+    "performance-now": "^0.2.0",
+    "prettyjson": "^1.1.3",
+    "steamvr-lighthouse-driver": "*",
+    "webvr-types-constructors": "*"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coffee-script": "^1.11.1",
+    "glob": "^7.1.0",
+    "joi": "^9.1.0",
+    "mocha": "^3.1.0",
+    "sleep": "^4.0.0"
+  }
+}

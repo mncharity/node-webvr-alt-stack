@@ -1,0 +1,5 @@
+node_modules
+files/driver_lighthouse.so
+files/libaitcamlib.so
+tmp
+tmpSteam

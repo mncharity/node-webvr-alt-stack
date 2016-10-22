@@ -1,0 +1,19 @@
+#!/bin/bash
+
+target=files/libudev.so.0
+source_Ubuntu=/lib/x86_64-linux-gnu/libudev.so.1
+source_Arch=/usr/lib/libudev.so.1
+
+if [ ! -f $target ]; then
+    if [ -f $source_Ubuntu ]; then
+        ln -s $source_Ubuntu $target
+    elif  [ -f $source_Arch ]; then
+        ln -s $source_Arch $target
+    else
+        echo "FAILED to find a libudev.so"
+        echo "Find a libudev.so.0 or libudev.so.1 and"
+        echo "ln -s /PATH/TO/LIBUDEVSO "`pwd`"/$target"
+        echo
+        exit 1
+    fi
+fi

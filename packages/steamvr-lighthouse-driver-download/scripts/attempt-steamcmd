@@ -1,0 +1,37 @@
+#!/bin/bash
+appid=250820 # SteamVR
+depotid=250823 # SteamVR "OpenVR Linux" depot
+manifestid=2825382862669742424
+tmpdir=`pwd`/tmpSteam
+
+file_driver=${tmpdir}/linux32/steamapps/content/app_${appid}/depot_${depotid}/drivers/lighthouse/bin/linux64/driver_lighthouse.so
+file_camlib=${tmpdir}/linux32/steamapps/content/app_${appid}/depot_${depotid}/drivers/lighthouse/bin/linux64/libaitcamlib.so
+
+outputdir="$1"; shift
+username="$1"; shift
+if [ -d "$outputdir" ] && [ "$username" == "" ]; then
+    echo ""
+    echo `pwd` "$0"
+    echo "Running SteamCMD will require you Steam username,"
+    echo "passworld, and likely a Steam Guard code."
+    echo ""
+    echo -n "Enter Steam username: "
+    read username
+    echo
+fi
+if [ "$username" == "" ] || [ ! -d "$outputdir" ]; then
+    echo "Usage: $0 OUTPUTDIR STEAM_USERNAME" >&2
+    exit 1
+fi
+
+echo "Using tmpdir $tmpdir."
+
+#{careful - tmpdir will contain short-lived user credentials
+scripts/steamvr-openvr-download-depot-using-steamcmd "$username" "$tmpdir" "$depotid" "$manifestid"
+
+cp -p $file_driver $file_camlib $outputdir
+
+rm -rf $tmpdir
+#}careful
+
+scripts/check-files "$outputdir" || exit 1

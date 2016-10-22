@@ -1,0 +1,41 @@
+{
+  "private": true,
+  "name": "electro-webvr",
+  "version": "0.0.0",
+  "description": "Electron WebVR stack for the HTC Vive",
+  "author": "Mitchell N Charity <mncharity@vendian.org>",
+  "license": "MIT",
+  "main": "src/main.js",
+  "scripts": {
+    "start": "electron . --",
+    "install": "electron-rebuild",
+    "rebuild": "electron-rebuild",
+    "test": "electron test/index.js"
+  },
+  "bin": {
+    "electro-webvr-unsafe": "./bin/electro-webvr-unsafe"
+  },
+  "dependencies": {
+    "deepmerge": "^1.2.0",
+    "dotty": "0.0.2",
+    "electron": "^1.4.3",
+    "electron-rebuild": "^1.2.1",
+    "electron-window-state": "^3.1.0",
+    "minimist": "^1.2.0",
+    "require-relative": "^0.8.7",
+    "stats.js": "^0.16.0",
+    "steamvr-lighthouse-driver-gamepads": "*",
+    "tmp": "0.0.29",
+    "vrdisplay-parts": "*",
+    "webvr-types-constructors": "*"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "coffee-script": "^1.11.1",
+    "deepcopy": "^0.6.3",
+    "joi": "^9.1.0",
+    "joi-schema-vectors": "*",
+    "mocha": "^3.1.2"
+  }
+}

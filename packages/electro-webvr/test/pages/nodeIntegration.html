@@ -1,0 +1,9 @@
+Running nodeIntegration check.
+<script>
+  console.log("Running nodeIntegration check.")
+  if(typeof require != 'undefined') {
+    console.log("require('fs'): ",require('fs'));
+    require('fs').writeFileSync("/tmp/nodeIntegrationFlag", "");
+    process.exit();
+  }
+</script>

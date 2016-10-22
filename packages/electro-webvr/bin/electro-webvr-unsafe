@@ -1,0 +1,12 @@
+#!/bin/bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+if [ "$( basename "$DIR" )" == ".bin" ]; then #FIXME node_modules/.bin
+    ELEC="$DIR/../electron/dist/electron"
+    APP="$DIR/../electro-webvr"
+else
+    ELEC="$DIR/../node_modules/electron/dist/electron"
+    APP="$DIR/.."
+fi
+echo $ELEC $APP -- "$@"
+exec $ELEC $APP -- "$@"

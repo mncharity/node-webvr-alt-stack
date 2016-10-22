@@ -1,0 +1,57 @@
+#!/bin/bash
+appid=250820 # SteamVR
+depotid=250823 # SteamVR "OpenVR Linux" depot
+
+# manifestid=9183475244149741279 # Sums via SteamCMD 2016-10-14
+# file_driver_size=2615133
+# file_camlib_size=163925
+# file_driver_sha256sum=dcab71c7fa47554224057a0896cc02a1a1b29a4b6f1e28adfc713b75255e6e88
+# file_camlib_sha256sum=b89c36d4fdb2b37920638b1d3985118924a046ed7261e35543f8db02aadc8781
+
+manifestid=2825382862669742424 # Sums via SteamCMD 2016-10-14
+file_driver_size=2615196
+file_camlib_size=163919
+file_driver_sha256sum=0f0f07ffec23bad859dda1864158ddc6790b8de8bac7afb666188240668868cf
+file_camlib_sha256sum=0374ae9afedfc01de0986cd01c9f3886b25908d68221a0b6afe0880c984baa84
+
+
+DIR="$1"; shift
+file_driver="$DIR/driver_lighthouse.so"
+file_camlib="$DIR/libaitcamlib.so"
+
+if [ ! -f "$file_driver" ] || [ ! -f "$file_camlib" ]; then
+    echo "Usage: $0 DIRECTORY" >&2
+    echo "  containing driver_lighthouse.so and libaitcamlib.so" >&2
+    exit 1
+fi
+
+# Were the files truncated?
+# This is advisory, as it seems to be something Valve's infrastucture does.
+
+file_driver_size_actual=$(wc -c <"$file_driver")
+file_camlib_size_actual=$(wc -c <"$file_camlib")
+if [ $file_driver_size == $file_driver_size_actual ]; then
+    echo "File size OK: $file_driver"
+else
+    echo "File size mismatch: expected $file_driver_size got $file_driver_size_actual for $file_driver" >&2
+fi
+if [ $file_camlib_size == $file_camlib_size_actual ]; then
+    echo "File size OK: $file_camlib"
+else
+    echo "File size mismatch: expected $file_camlib_size got $file_camlib_size_actual for $file_camlib" >&2
+fi
+
+# Were the files valid?
+
+file_driver_sha256sum_actual=$(sha256sum "$file_driver"|awk '{print $1}')
+file_camlib_sha256sum_actual=$(sha256sum "$file_camlib"|awk '{print $1}')
+if [ $file_driver_sha256sum == $file_driver_sha256sum_actual ]; then
+    echo "File sha256sum OK: $file_driver"
+else
+    echo "File sha256sum mismatch: expected $file_driver_sha256sum got $file_driver_sha256sum_actual for $file_driver" >&2 ||  exit 1
+fi
+if [ $file_camlib_sha256sum == $file_camlib_sha256sum_actual ]; then
+    echo "File sha256sum OK: $file_camlib"
+else
+    echo "File sha256sum mismatch: expected $file_camlib_sha256sum got $file_camlib_sha256sum_actual for $file_camlib" >&2 || exit 1
+fi

@@ -1,0 +1,10 @@
+<script>
+  var flag = false;
+  function toggle () {
+    flag = !flag;
+    var remote = require('electron').remote;
+    var hmdWindow = remote.getGlobal("hmdWindow") || remote.getGlobal('state').windows.main.window;
+    hmdWindow.webContents.send("hmd-window-show-on-hmd",flag);    
+  }
+</script>
+<a href="javascript:toggle()">Move browser window between Desktop and HMD.</a>

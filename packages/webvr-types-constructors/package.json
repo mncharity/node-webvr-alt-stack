@@ -1,0 +1,18 @@
+{
+  "private": true,
+  "name": "webvr-types-constructors",
+  "version": "0.0.0",
+  "description": "WebVR contructors",
+  "author": "Mitchell N Charity <mncharity@vendian.org>",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coffee-script": "^1.11.1",
+    "mocha": "^3.1.2"
+  }
+}

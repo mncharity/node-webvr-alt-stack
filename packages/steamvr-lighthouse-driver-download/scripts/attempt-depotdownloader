@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "Development abandoned."
+exit 1
