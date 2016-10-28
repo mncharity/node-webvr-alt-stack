@@ -1,0 +1,114 @@
+.all-input-status {
+    float: left;
+}
+
+.room-view {
+    width: 400px;
+    height: 250px;
+    float: left;
+}
+.room-view > canvas {
+}
+
+.gamepad-is-disconnected {
+    opacity: 0.2;
+}
+.gamepad-pose-is-valid {
+    background-color: rgba(0,255,0,0.3);
+}
+.gamepad-pose-is-invalid {
+    background-color: rgba(255,0,0,0.3);
+}
+
+.button-disabled {
+    fill: #888;
+    stroke: #888;
+}
+.button-default {
+    fill: #005;
+    stroke: #005;
+}
+.button-touched {
+    stroke: #005;
+    fill: #88a;
+}
+.button-pressed {
+    stroke: #aaf;
+    fill: #aaf;
+}
+
+.vive-controller-touchpad {
+    fill: #005;
+    stroke: #005;
+}
+.vive-controller-touchpad.button-touched {
+    fill: #005;
+    stroke: #88a;
+}
+.vive-controller-touchpad.button-pressed {
+    fill: #88a;
+    stroke: #aaf;
+}
+
+.camera-disabled {
+    fill: #a00;
+}
+.camera-enabled {
+    fill: #0f0;
+}
+
+.battery-charge-unknown {
+    fill: #844;
+}
+.battery-charge-gt-50 {
+    fill: #4f4;
+}
+.battery-charge-gt-25 {
+    fill: #fc0;
+}
+.battery-charge-low {
+    fill: #f00;
+}
+
+.gamepad-table {
+    float: left;
+}
+
+.gamepad-table--position {
+    display: inline-block;
+    margin-left: 1em;
+    font-family: monospace;
+    font-size: 15px;
+    min-width: 150px;
+}
+.gamepad-table--orientation {
+    display: inline-block;
+    margin-left: 1em;
+    font-family: monospace;
+    font-size: 12px;
+    min-width: 150px;
+}
+.gamepad-table--information {
+    display: inline;
+    margin-left: 1em;
+    font-size: 80%;
+}
+.gamepad-table--information--id {
+    display: inline;
+}
+
+.gamepad-table--number {
+    display: inline;
+}
+.gamepad-table--axis-x {
+    color: #500;
+}
+.gamepad-table--axis-y {
+    color: #050;
+}
+.gamepad-table--axis-z {
+    color: #005;
+}
+.gamepad-table--w {
+    color: #222;
+}

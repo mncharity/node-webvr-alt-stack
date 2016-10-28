@@ -12,7 +12,11 @@ function config (dots) {
 function moduleLoad (_module) {
   var _name = _module.require ? _module.require : _module;
   var _post = _module.post;
+
+  //ISSUE: main process error reporting.
+  //This console.log is often the only hint at what failed.
   console.log("moduleLoad: ",_module);
+
   var _req = require(_name);
   if (_post) {
     var _expr = "_req"+_post;

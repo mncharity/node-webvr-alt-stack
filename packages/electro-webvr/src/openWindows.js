@@ -5,8 +5,12 @@ function preloadRequires_setup (w,window) {
   const channel = 'request-preload-requires';
   const responder = (e)=>{
     if (e.sender == window.webContents) {
+      const requires = [].concat(
+        global.configuration.windowsPreloadRequires || [],
+        w.preloadRequires || []
+      );
       e.returnValue = {
-        requires: w.preloadRequires || [],
+        requires,
       };
       // cleanup(); //ISSUE page navigation?
     };
@@ -40,8 +44,8 @@ function setup (windowsSpec) {
         defaultWidth: options.width || 800,
         defaultHeight: options.height || 600,
       });
-      options.x = rWP.x;
-      options.y = rWP.y;
+      if (typeof options.x == 'undefined') options.x = rWP.x;
+      if (typeof options.y == 'undefined') options.y = rWP.y;
       options.width = rWP.width;
       options.height = rWP.height;
     }

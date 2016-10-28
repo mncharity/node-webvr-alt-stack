@@ -8,6 +8,7 @@ const ETrackingResult = {
 };
 
 const EVRControllerAxisType = {
+  None: 0,
   TrackPad: 1,
   Joystick: 2,
   Trigger: 3,

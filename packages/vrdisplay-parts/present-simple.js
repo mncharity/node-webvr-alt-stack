@@ -5,27 +5,27 @@ const visibleArea = 0.876;
 const visibleSize = {w: Math.round(viveSize.w * visibleArea),
                      h: Math.round(viveSize.h * visibleArea)};
 
-const c_APIVisibleL = 'vrdisplay--visible-area-left ';
-const c_APIVisibleR = 'vrdisplay--visible-area-right ';
+const c_APIVisibleL = 'vrdisplay--visible-area-left';
+const c_APIVisibleR = 'vrdisplay--visible-area-right';
 
-const c_Self = 'present-simple ';
-const c_Background =  'presentation-background ';
-const c_Frame = 'presentation-frame ';
-const c_Layers = 'presentation-layers ';
+const c_Self = 'present-simple';
+const c_Background =  'presentation-background';
+const c_Frame = 'presentation-frame';
+const c_Layers = 'presentation-layers';
 
-function presentationDivCreate () {
+function presentationDivCreate (frameColor) {
   const zindex = 10000;
 
-  if (document.getElementsByClassName(c_Self+c_Background).length)
+  if (document.getElementsByClassName(c_Self+' '+c_Background).length)
     return;
 
   const div = (cN)=>{
     const d = document.createElement('div');
     d.className = cN; return d; };
 
-  const divBackground = div(c_Self+c_Background);
-  const divFrame = div(c_Self+c_Frame);
-  const divLayers = div(c_Self+c_Layers);
+  const divBackground = div(c_Self+' '+c_Background);
+  const divFrame = div(c_Self+' '+c_Frame);
+  const divLayers = div(c_Self+' '+c_Layers);
   const apiVisL = div(c_APIVisibleL);
   const apiVisR = div(c_APIVisibleR);
   
@@ -44,9 +44,9 @@ function presentationDivCreate () {
   const css = (`
              `+'.'+c_Self+'.'+c_Background+`{
                position: fixed;
-               z-index`+zindex+`;
+               z-index: `+zindex+`;
                left:0; right:0; top:0; bottom:0;
-               background-color: black;
+               background-color: `+frameColor+`;
              }
              `+'.'+c_Self+'.'+c_Frame+` {
                position: absolute;
@@ -86,25 +86,30 @@ function presentationDivCreate () {
   divFrame.appendChild(divLayers);
   divFrame.appendChild(apiVisL);
   divFrame.appendChild(apiVisR);
-  divBackground.appendChild(style);
   divBackground.appendChild(divFrame);
+  document.body.appendChild(style);
   document.body.appendChild(divBackground);
 }
 function presentationDivAttach (canvas) {
-  const e = document.getElementsByClassName(c_Self+c_Layers)[0];
+  const e = document.getElementsByClassName(c_Self+' '+c_Layers)[0];
   while (e.firstChild) {e.removeChild(e.firstChild);}
   e.appendChild(canvas);
 }
 function presentationDivSetVisibility (isVisible) {
-  const e = document.getElementsByClassName(c_Self+c_Background)[0];
+  const e = document.getElementsByClassName(c_Self+' '+c_Background)[0];
   e.style.display = isVisible ? "block" : "none";
 }
 
 module.exports = {
   make: function (opts) {
-    const options = Object.assign({},{
+    const options = Object.assign({
+      frameColor: 'random',
       scale: 1,
     },opts);
+    const frameColor =
+          (options.frameColor == 'random' // avoid screen burn-in
+           ? ['red','green','blue'][Math.floor(Math.random()*3)]
+           : options.frameColor);
     var _layers = [];
     var _canvas = null;
     var _visible = false;
@@ -156,7 +161,7 @@ module.exports = {
         if (!this.isPresenting) {
           this.isPresenting = true;
           emit_vrdisplaypresentchange(this,null);
-          presentationDivCreate();
+          presentationDivCreate(frameColor);
         }
         if (_canvas != canvas) {
           _canvas = canvas;

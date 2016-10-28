@@ -3,9 +3,11 @@ chaiAsPromised = require("chai-as-promised");
 chai.use(chaiAsPromised);
 
 schema = require('./schema-webvr')
-{ getVRDisplays, VRFrameData, getGamepads, _init } = require('../addins/webvr')
+{ getVRDisplays, VRFrameData } = vrdisplay = require('../addins/vrdisplay')
+{ getGamepads } = gamepadsServer = require('../addins/gamepads/preloadServer')
 
-_init();
+gamepadsServer.pluginE({config:(->undefined),local:{}});
+vrdisplay.pluginE({config:(->undefined),local:{}});
 
 display = undefined
 

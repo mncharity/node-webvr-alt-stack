@@ -51,13 +51,13 @@ function applyQuaternion ( c, a, q ) {
 
 // From https://github.com/mrdoob/three.js/blob/master/src/math/Quaternion.js
 function setFromAxisAngle ( q, axis, angle ) {
-		// http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
-		//FIXME assumes axis is normalized
-		var halfAngle = angle / 2, s = Math.sin( halfAngle );
-		q[0] = axis[0] * s;
-		q[1] = axis[1] * s;
-		q[2] = axis[2] * s;
-		q[3] = Math.cos( halfAngle );
+  // http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm
+  //FIXME assumes axis is normalized
+  var halfAngle = angle / 2, s = Math.sin( halfAngle );
+  q[0] = axis[0] * s;
+  q[1] = axis[1] * s;
+  q[2] = axis[2] * s;
+  q[3] = Math.cos( halfAngle );
 }
 
 

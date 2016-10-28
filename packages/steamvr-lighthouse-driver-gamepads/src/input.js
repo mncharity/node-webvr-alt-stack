@@ -1,6 +1,8 @@
 const driver = require('steamvr-lighthouse-driver')
 const { EVRControllerAxisType, EVRButtonId } = driver.openvr;
 
+var warned_unknownEVRControllerAxisType = false;
+
 function GamepadButtonLighthouse () {
   this.pressed = false;
   this.touched = false;
@@ -8,21 +10,27 @@ function GamepadButtonLighthouse () {
 }
 
 function setButtonsAndAxes (gamepad,device) {
-  var buttons = [];
-  var axes = [];
+  const buttons = [];
+  const axes = [];
+
+  const isViveHeadset =
+        (device.properties && device.properties.ModelNumber &&
+         device.properties.ModelNumber.match('Vive MV'));
 
   if (device.controllerState) {
     // Axes
-    var maxAxis = 4;
-    var rAxis = device.controllerState.rAxis;
-    var types = [];
+    const maxAxis = 4;
+    const rAxis = device.controllerState.rAxis;
+    const types = [];
     var valueOf_SteamVR_Trigger = undefined;
     for(var n=0; n <= maxAxis; n++) {
       var k = "Axis"+n+"Type";
       types[n] = device.properties[k];
     }
     for(var n=0; n <= maxAxis; n++) {
-      if (types[n] == EVRControllerAxisType.TrackPad) {
+      if (types[n] == EVRControllerAxisType.None) {
+      }
+      else if (types[n] == EVRControllerAxisType.TrackPad) {
         axes.push( rAxis[n].x );
         axes.push( rAxis[n].y );
       }
@@ -31,7 +39,7 @@ function setButtonsAndAxes (gamepad,device) {
         axes.push( rAxis[n].x );
         axes.push( rAxis[n].y );
       }
-      else if(types[n] == EVRControllerAxisType.Trigger) {
+      else if (types[n] == EVRControllerAxisType.Trigger) {
         if (n == 1) {
           // Expose SteamVR_Trigger aka Axis1 as WebVR button.value, not an axis.
           valueOf_SteamVR_Trigger = rAxis[n].x;
@@ -39,21 +47,22 @@ function setButtonsAndAxes (gamepad,device) {
           axes.push( rAxis[n].x );
         }
       }
-      else {
-        //DOABLE: log unknown type
+      else if (!warned_unknownEVRControllerAxisType) {
+        warned_unknownEVRControllerAxisType = true;
+        console.log("WARNING: ignored unknown EVRControllerAxisType: ",types[n]);
       }
     }
     // Buttons
-    var dprops = device.properties;
-    var cstate = device.controllerState;
+    const dprops = device.properties;
+    const cstate = device.controllerState;
     if (dprops.SupportedButtonsLO || dprops.SupportedButtonsHI) {
       for(var n=0; n < 64; n++) {
-        var i = (n < 32 ? n : n - 31) - 1;
-        var supported = n < 32 ? dprops.SupportedButtonsLO : dprops.SupportedButtonsHI;
+        const i = (n < 32 ? n : n - 31) - 1;
+        const supported = n < 32 ? dprops.SupportedButtonsLO : dprops.SupportedButtonsHI;
         if (supported & (1 << i)) {
-          var pressed = n < 32 ? cstate.ulButtonPressedLO : cstate.ulButtonPressedHI;
-          var touched = n < 32 ? cstate.ulButtonTouchedLO : cstate.ulButtonTouchedHI;
-          var b = new GamepadButtonLighthouse();        
+          const pressed = n < 32 ? cstate.ulButtonPressedLO : cstate.ulButtonPressedHI;
+          const touched = n < 32 ? cstate.ulButtonTouchedLO : cstate.ulButtonTouchedHI;
+          const b = new GamepadButtonLighthouse();
           b.pressed = pressed & (1 << i) ? true : false;
           b.touched = touched & (1 << i) ? true : false;
           b.value = 0;
@@ -64,8 +73,7 @@ function setButtonsAndAxes (gamepad,device) {
       }
     }
   }
-  else if (device.properties && device.properties.SerialNumber &&
-           device.properties.SerialNumber.match('^LHR-')) {
+  else if (isViveHeadset) {
 
     // HTC Vive HMD has a headset button, but doesn't expose controllerState.
     var b = new GamepadButtonLighthouse();        
@@ -88,6 +96,13 @@ function setButtonsAndAxes (gamepad,device) {
       b.value = b.pressed ? 1 : 0;
       buttons.push(b);
     }
+
+    // Expose ServerDriverHost PhysicalIpdSet as an axis.
+    //ISSUE PhysicalIpdSet and prop UserIpdMeters don't change with knob movement.
+    if (device.extras) {
+      axes.push( device.extras.fPhysicalIpdMeters );
+    }
+
   }
   gamepad.buttons = buttons;
   gamepad.axes = axes;         

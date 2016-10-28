@@ -1,45 +1,59 @@
 const { multiplyQuaternions, vector3Add, applyQuaternion, setFromAxisAngle } = require('./math')
 
+// buttons
+// 0 Vive Base
+// 2 Vive HMD (side button, proximity sensor)
+// 4 Vive Controller
 function gamepadLooksLikeViveHMD (gamepad) {
   return (gamepad && gamepad.buttons &&
-          gamepad.buttons.length == 2);
-  // buttons
-  // 0 Vive Base
-  // 2 Vive HMD (side button, proximity sensor)
-  // 4 Vive Controller
+          gamepad.buttons.length > 0 &&
+          gamepad.buttons.length < 4 );
+}
+function gamepadLooksLikeViveController (gamepad) {
+  return (gamepad && gamepad.buttons &&
+          gamepad.buttons.length >= 4);
 }
 
 function rotateOnXAxis180 (orientation) {
   if (!orientation) return orientation;
-  var flipped = new Float32Array(4);
-  var xAxis180 = [1,0,0,0];
-  multiplyQuaternions(flipped,orientation,xAxis180)
-  return flipped;
+  const old = Float32Array.from(orientation);
+  const xAxis180 = [1,0,0,0];
+  multiplyQuaternions(orientation,old,xAxis180)
 }
 
 function customizeForBrowser_gamepad (gamepad) {
-  // Mutations required for Three.js demos to work.
+  // Data alterations required for Three.js demos to work.
   // And thus, by implication, to mimic browser behavior.
-  if (!gamepad || !gamepad.pose) return gamepad;
-  var pose = gamepad.pose;
-  const looksLikeController = gamepad.buttons.length > 2;
-  if (gamepadLooksLikeViveHMD(gamepad))
-    pose.orientation = rotateOnXAxis180(pose.orientation);
-  else if (looksLikeController) {
-    var offset = [.01,.12,.005];
-    var dpos = new Float32Array(3);
-    applyQuaternion(dpos,offset,pose.orientation);
-    var oldpos = new Float32Array(pose.position);
-    vector3Add(pose.position,oldpos,dpos);
-    var old = new Float32Array(pose.orientation);
-    multiplyQuaternions(pose.orientation,old,[0,.75,-.65,0])
 
+  if (!gamepad) return gamepad;
+
+  if (gamepadLooksLikeViveController(gamepad)) {
     // Reorder buttons
-    // THREE.ViveController: thumbpad, trigger, grips, menu 
+    // THREE.ViveController: thumbpad, trigger, grips, menu
     // 3, 4, 2, 1, # 0
     const remap = [3,4,2,1,0];
-    const b = Array.from(gamepad.buttons);
-    remap.forEach((iold,inew)=>{ gamepad.buttons[inew] = b[iold] });
+    const old = Array.from(gamepad.buttons);
+    remap.forEach((iold,inew)=>{ gamepad.buttons[inew] = old[iold] });
+  }
+
+  if (!gamepad.pose) return gamepad;
+  const pose = gamepad.pose;
+
+  if (gamepadLooksLikeViveHMD(gamepad)) {
+    rotateOnXAxis180(pose.orientation);
+  }
+  else if (gamepadLooksLikeViveController(gamepad)) {
+    //DOABLE improve eyeballed numbers
+    const translate = [.01,.12,.005];
+    const rotate = [0,.75,-.65,0];
+
+    const dpos = new Float32Array(3);
+    applyQuaternion(dpos,translate,pose.orientation);
+    const oldpos = Float32Array.from(pose.position);
+    vector3Add(pose.position,oldpos,dpos);
+
+    const oldo = Float32Array.from(pose.orientation);
+    multiplyQuaternions(pose.orientation,oldo,rotate)
   }
   return gamepad;
 }
@@ -50,23 +64,23 @@ function customizeForBrowser () {
   };
 }
 
-function customizePoseWith (rotate,dxdydz) {
+function customizePoseWith (dxdydz,rotate) {
   return function (gamepads) {
-    var qrot = new Float32Array(4);
+    const qrot = new Float32Array(4);
     if (rotate) setFromAxisAngle(qrot,[0,1,0],rotate/180*3.14);
     return gamepads.map((gamepad)=>{
       if(!gamepad || !gamepad.pose) return gamepad;
-      var pose = gamepad.pose;
+      const pose = gamepad.pose;
+      if (dxdydz) {
+        vector3Add(pose.position,pose.position,dxdydz);
+      }
       if (rotate && pose.position) {
-        var old = new Float32Array(pose.position);
+        const old = Float32Array.from(pose.position);
         applyQuaternion(pose.position,old,qrot);
       }
       if (rotate && pose.orientation) {
-        var oldq = new Float32Array(pose.orientation);
-        multiplyQuaternion(pose.orientation,oldq,qrot);
-      }
-      if (dxdydz) {
-        vector3Add(pose.position,pose.position,dxdydz);
+        const oldq = Float32Array.from(pose.orientation);
+        multiplyQuaternions(pose.orientation,qrot,oldq);
       }
       return gamepad;
     });

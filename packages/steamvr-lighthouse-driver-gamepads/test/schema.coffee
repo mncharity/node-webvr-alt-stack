@@ -35,7 +35,7 @@ schema_gamepad = ->
     connected: J.boolean()
     buttons: J.array().items schema_button()
     axes: J.array().items J.number()
-    pose: schema_pose()
+    pose: schema_pose().allow(null)
     timestamp: J.number().positive()
 
 schema_gamepads1 = ->

@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "name": "ew-window-status",
+  "version": "0.0.0",
+  "description": "An electro-webvr window showing gamepads status",
+  "author": "Mitchell N Charity <mncharity@vendian.org>",
+  "license": "MIT",
+  "scripts": {
+    "test": "mocha"
+  },
+  "dependencies": {
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "sprintf-js": "^1.0.3",
+    "three": "^0.82.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "coffee-script": "^1.11.1",
+    "mocha": "^3.1.2"
+  }
+}

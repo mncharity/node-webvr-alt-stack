@@ -1,4 +1,5 @@
 const performance_now = require('performance-now');
+const deepcopy = require('deepcopy');
 const driver = require('steamvr-lighthouse-driver')
 const { gamepadFromDevice } = require('./gamepad')
 const { GamepadEvent, emit_gamepadconnected, emit_gamepaddisconnected } = require('./events')
@@ -36,17 +37,19 @@ class ProvideGamepads {
       driver.driverInstallDir = opts.driverInstallDir;
     this.devices = [];
     this.gamepads = [];
+    this.gamepadsRaw = [];
     this.customizations = opts && opts.customizations || [];
     this.deactivate();
   }
   deactivate () {
     this.active = false;
-    this.gamepadProperties = [undefined];
+    this.gamepadsProperties = [undefined];
     this.gamepads.forEach((gamepad)=>{
       if (gamepad) emit_gamepaddisconnected(gamepad);
     });
     this.devices = [];
     this.gamepads = [];
+    this.gamepadsRaw = [];
   }
   activate () {
     this.active = true;
@@ -62,23 +65,25 @@ class ProvideGamepads {
     driver.update();
     this.devices = driver.devices;
   }
+  _shouldActivate () {
+    return (((typeof document == 'undefined') || document.hasFocus())
+            && thereIsUserInput(this.gamepads));
+  }
   getGamepads () {
     this._update();
-    this.gamepads = gamepadsFrom(driver.devices);
+    this.gamepadsProperties = propertiesFrom(driver.devices);
+    this.gamepadsRaw = gamepadsFrom(driver.devices);
+    this.gamepads = this._customize(this.gamepadsRaw);
     if (!this.active) {
-      //FIXME TODO expose focus check for testing and options
-      if (((typeof document == 'undefined') || document.hasFocus())
-          && (thereIsUserInput(this.gamepads)))
+      if (this._shouldActivate())
         this.activate();
       else
         return [null];
     }
-    this.gamepadProperties = propertiesFrom(driver.devices);
-    this.gamepads = this._customize(this.gamepads);
     return this.gamepads;
   }
   _customize (gamepads) {
-    var pads = gamepads;
+    var pads = deepcopy(gamepads);
     this.customizations.forEach((customize)=>{
       pads = customize(pads);
     });

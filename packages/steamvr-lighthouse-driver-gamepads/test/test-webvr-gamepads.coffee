@@ -34,8 +34,8 @@ describe "lifecycle",->
     it ".active is false",->
       expect(pkg.active).is.equal false
 
-    it ".gamepadProperties is almost empty",->
-      expectAlmostEmpty(pkg.gamepadProperties,undefined);
+    it ".gamepadsProperties is almost empty",->
+      expectAlmostEmpty(pkg.gamepadsProperties,undefined);
 
   describe "after first call to getGamepads",->
     before ->
@@ -44,8 +44,8 @@ describe "lifecycle",->
     it ".active is false",->
       expect(pkg.active).is.equal false
 
-    it ".gamepadProperties is almost empty",->
-      expectAlmostEmpty(pkg.gamepadProperties, undefined);
+    it ".gamepadsProperties is almost empty",->
+      expectAlmostEmpty(pkg.gamepadsProperties, undefined);
   
     it ".getGamepads() output is almost empty",->
       expectAlmostEmpty(output, null)
@@ -58,8 +58,8 @@ describe "lifecycle",->
     it ".active is false",->
       expect(pkg.active).is.equal false
 
-    it ".gamepadProperties is almost empty",->
-      expectAlmostEmpty(pkg.gamepadProperties, undefined);
+    it ".gamepadsProperties is almost empty",->
+      expectAlmostEmpty(pkg.gamepadsProperties, undefined);
   
     it ".getGamepads() output is almost empty",->
       expectAlmostEmpty(output, null)
@@ -73,14 +73,14 @@ describe "lifecycle",->
     it ".active is true",->
       expect(pkg.active).is.equal true
 
-    it ".gamepadProperties is not empty",->
-      expect(pkg.gamepadProperties.length).is.at.least 2
+    it ".gamepadsProperties is not empty",->
+      expect(pkg.gamepadsProperties.length).is.at.least 2
   
     it ".getGamepads() output is not empty",->
       expect(output.length).is.at.least 2
 
-    it ".gamepadProperties is valid",->
-      data = pkg.gamepadProperties
+    it ".gamepadsProperties is valid",->
+      data = pkg.gamepadsProperties
       expect(schema.validate_properties(data)).is.eql null
 
     it ".getGamepads() output is valid",->
@@ -94,8 +94,8 @@ describe "lifecycle",->
     it ".active is false",->
       expect(pkg.active).is.equal false
 
-    it ".gamepadProperties is almost empty",->
-      expectAlmostEmpty(pkg.gamepadProperties, undefined);
+    it ".gamepadsProperties is almost empty",->
+      expectAlmostEmpty(pkg.gamepadsProperties, undefined);
   
     it ".getGamepads() output is almost empty",->
       expectAlmostEmpty(output, null)

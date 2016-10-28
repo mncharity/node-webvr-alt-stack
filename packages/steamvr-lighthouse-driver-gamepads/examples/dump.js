@@ -15,7 +15,7 @@ function sample () {
   if (true) {
     console.log("\n\n------------------------------------------\n\n");
     console.log(prettyjson.render(window_navigator.getGamepads()));
-    //console.log(gamepads.gamepadProperties);
+    //console.log(gamepads.gamepadsProperties);
     console.log();
   }
   repeats--;

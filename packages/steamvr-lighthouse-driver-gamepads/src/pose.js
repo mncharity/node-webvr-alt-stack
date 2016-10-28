@@ -19,6 +19,11 @@ const { new_VRPose_withEverything, new_VRPose_from } = require('webvr-types-cons
 //  * lagged due to the filtering required to reduce noise to an acceptable level.
 //  */
 
+//ISSUE we're throwing away DriverPose_t's poseTimeOffset.
+//Perhaps timeStamp = performance.now - poseTimeOffset?
+// But that would mean trusting it.
+
+
 function worldPoseFromDevicePose (pose,dp) {
   vector3Add(pose.position, dp.vecPosition, dp.vecWorldFromDriverTranslation);
   multiplyQuaternions(pose.orientation, dp.qRotation, dp.qWorldFromDriverRotation);
@@ -28,45 +33,13 @@ function worldPoseFromDevicePose (pose,dp) {
   applyQuaternion(pose.angularAcceleration, dp.vecAngularAcceleration, dp.qWorldFromDriverRotation);
 }
 
-//ISSUE we're throwing away DriverPose_t's poseTimeOffset.
-//Perhaps timeStamp = performance.now - poseTimeOffset?
-
-
 function setPose (gamepad,device) {
-  var dp = device.pose;
-  var pose;
-  if (dp) {
-    gamepad.connected = dp.deviceIsConnected;
-    if (dp.poseIsValid) {
-      if (false) {
-        //ISSUE qWorldFromDriverRotation breaks HMD orientation.
-        // Makes orientation different, depending on which base is tracking.
-        // And causes freezes in transition.
-        // It's not swapped quaternion multiply arguments.
-        // Better to use the raw data.
-        pose = new_VRPose_from(
-          dp.vecPosition,
-          dp.vecVelocity,
-          dp.vecAcceleration,
-          dp.qRotation,
-          dp.vecAngularVelocity,
-          dp.vecAngularAcceleration
-        );
-      }
-      else {
-        pose = new_VRPose_withEverything();
-        worldPoseFromDevicePose(pose,device.pose);
-      }
-
-      //FIXME BUG electron ipc Float32Array workaround
-      if (true) { // Providing Array, instead of Float32Array
-        pose.position = Array.prototype.slice.call(pose.position);
-        pose.linearVelocity = Array.prototype.slice.call(pose.linearVelocity);
-        pose.linearAcceleration = Array.prototype.slice.call(pose.linearAcceleration);
-        pose.orientation = Array.prototype.slice.call(pose.orientation);
-        pose.angularVelocity = Array.prototype.slice.call(pose.angularVelocity);
-        pose.angularAcceleration = Array.prototype.slice.call(pose.angularAcceleration);
-      }
+  var pose = null;
+  if (device.pose) {
+    gamepad.connected = device.pose.deviceIsConnected;
+    if (device.pose.poseIsValid) {
+      pose = new_VRPose_withEverything();
+      worldPoseFromDevicePose(pose,device.pose);
     }
   }
   //ISSUE Gamepad.pose isn't spec as of 2016-09-30.
