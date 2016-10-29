@@ -9,7 +9,9 @@
   "scripts": {
     "test": "mocha"
   },
-  "dependencies": {},
+  "dependencies": {
+    "deepcopy": "^0.6.3"
+  },
   "devDependencies": {
     "chai": "^3.5.0",
     "coffee-script": "^1.11.1",

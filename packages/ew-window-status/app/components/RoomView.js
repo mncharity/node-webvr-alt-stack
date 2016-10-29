@@ -58,7 +58,7 @@ function createAxesOnPole (poleArg,axesArg) {
       pole.setY(pose.position[1]);
       axes.object.position.y = pose.position[1];
       const po = pose.orientation;
-      const q = new THREE.Quaternion(po[0],po[1],po[2],po[3]);
+      const q = new THREE.Quaternion(...po);
       axes.object.quaternion.copy(q);
       axes.object.updateMatrix();
       axes.object.matrixAutoUpdate = false;

@@ -1,3 +1,51 @@
+const deepcopy = require('deepcopy');
+
+function deepcopy_Gamepad (gamepad) {
+  // deepcopy interacts poorly with functions, like hapticActuators's pulse().
+  if (!gamepad) return gamepad;
+  const gp = Object.assign(new GamepadObject(),gamepad);
+  gp.buttons = deepcopy(gp.buttons);
+  gp.axes = deepcopy(gp.axes);
+  if (gamepad.hapticActuators) {
+    gp.hapticActuators = gamepad.hapticActuators.map( ha =>{
+      return Object.assign(new GamepadHapticActuatorObject(),ha);
+    });
+  }
+  return gp;
+}
+
+
+class GamepadHapticActuatorObject {
+  constructor() {
+    this.type = undefined;
+    this.pulse = undefined;
+  }
+}
+
+function GamepadButtonObject () {
+  this.pressed = false;
+  this.touched = false;
+  this.value = 0.0;
+}
+
+class GamepadObject {
+  constructor () {
+    this.index = 0
+    this.id = ""
+    this.mapping = ""
+    this.connected = false
+    this.buttons = []
+    this.axes = []
+    this.pose = null
+    this.timestamp = 0;
+    this.hand = undefined;
+    this.hapticActuators = undefined;
+  }
+}
+
+
+
+
 // Based on https://w3c.github.io/webvr/#interface-vrdisplay rev 2016-09-21.
 
 //FIXME ISSUE Constructor behavior hasn't been verified.
@@ -92,7 +140,13 @@ class VRFrameDataObject {
   }
 }
 
+
 module.exports = {
+  GamepadHapticActuator: GamepadHapticActuatorObject,
+  GamepadButton: GamepadButtonObject,
+  Gamepad: GamepadObject,
+  deepcopy_Gamepad,
+
   VRDisplayCapabilities: VRDisplayCapabilitiesObject,
   VRStageParameters: VRStageParametersObject,
   VRFieldOfView: VRFieldOfViewObject, 

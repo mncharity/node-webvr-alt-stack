@@ -1,8 +1,8 @@
 const performance_now = require('performance-now');
-const deepcopy = require('deepcopy');
 const driver = require('steamvr-lighthouse-driver')
+const { deepcopy_Gamepad } = require('webvr-types-constructors')
 const { gamepadFromDevice } = require('./gamepad')
-const { GamepadEvent, emit_gamepadconnected, emit_gamepaddisconnected } = require('./events')
+const { emit_gamepadconnected, emit_gamepaddisconnected } = require('./events')
 const {  customizePoseWith, customizeForBrowser } = require("./customize");
 
 function gamepadsFrom (devices) {
@@ -83,7 +83,7 @@ class ProvideGamepads {
     return this.gamepads;
   }
   _customize (gamepads) {
-    var pads = deepcopy(gamepads);
+    var pads = gamepads.map(deepcopy_Gamepad);
     this.customizations.forEach((customize)=>{
       pads = customize(pads);
     });
@@ -91,7 +91,6 @@ class ProvideGamepads {
   }
 }
 Object.assign(ProvideGamepads,{
-  GamepadEvent,
   customizePoseWith,
   customizeForBrowser,
 });

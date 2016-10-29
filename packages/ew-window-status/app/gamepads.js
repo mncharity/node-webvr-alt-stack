@@ -16,6 +16,7 @@ function createPad (lighthouseGamepadsState,index) {
     id,
     connected,
     pose,
+    hapticActuators,
   } = gamepad;
   const sn = SerialNumber || "";
   const pad = {
@@ -31,6 +32,7 @@ function createPad (lighthouseGamepadsState,index) {
     id,
     connected,
     pose,
+    hapticActuators,
 
     index,
     isViveBase: false,

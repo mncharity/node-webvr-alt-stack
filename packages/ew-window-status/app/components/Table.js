@@ -10,17 +10,18 @@ const Information = component('Information',{
   }
 })
 
+//ISSUE WORKAROUND Float32Array values shown with excess precision.
+//Workaround: Array.from(float32Array) before .map()ing values.
+//electro-webvr/examples/welcome.html hit the same issue with .toFixed,
+//so it's not sprintf's fault.  Chromium bug?
+
 const Orientation = component('Orientation',{
   render () {
     const {pad} = this.props;
     var kids = [];
     if (pad.pose && pad.pose.orientation) {
-      var data = pad.pose.orientation;
-      if (data.length == undefined) {
-        //ISSUE lighthouseGamepads broken Float32Array
-        data = Array.from(Object.assign({length:4},data));
-      }
-      const [x,y,z,w] = data.map( v =>{
+      //ISSUE WORKAROUND Float32Array values shown with excess precision.
+      const [x,y,z,w] = Array.from(pad.pose.orientation).map( v =>{
         return sprintf("%+5.2f",v)
       });
       kids = [
@@ -39,12 +40,8 @@ const Position = component('Position',{
     const {pad} = this.props;
     var kids = [];
     if (pad.pose && pad.pose.position) {
-      var data = pad.pose.position;
-      if (data.length == undefined) {
-        //ISSUE lighthouseGamepads broken Float32Array
-        data = Array.from(Object.assign({length:3},data));
-      }
-      const [x,y,z] = data.map( v =>{
+      //ISSUE WORKAROUND Float32Array values shown with excess precision.
+      const [x,y,z] = Array.from(pad.pose.position).map( v =>{
         return sprintf("%+5.2f",v)
       });
       kids = [

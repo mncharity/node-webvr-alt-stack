@@ -3,4 +3,6 @@ module.exports = {
   clientResponse: undefined, // currently sync
   serverRequest: 'lighthouse-gamepads--update-needed',
   serverResponse: 'lighthouse-gamepads--update-provided',
+
+  pulseRequest: 'lighthouse-gamepads--pulse',
 }

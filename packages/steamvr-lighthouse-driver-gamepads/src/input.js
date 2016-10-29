@@ -1,13 +1,8 @@
 const driver = require('steamvr-lighthouse-driver')
 const { EVRControllerAxisType, EVRButtonId } = driver.openvr;
+const { GamepadButton } = require('webvr-types-constructors');
 
 var warned_unknownEVRControllerAxisType = false;
-
-function GamepadButtonLighthouse () {
-  this.pressed = false;
-  this.touched = false;
-  this.value = 0.0;
-}
 
 function setButtonsAndAxes (gamepad,device) {
   const buttons = [];
@@ -62,7 +57,7 @@ function setButtonsAndAxes (gamepad,device) {
         if (supported & (1 << i)) {
           const pressed = n < 32 ? cstate.ulButtonPressedLO : cstate.ulButtonPressedHI;
           const touched = n < 32 ? cstate.ulButtonTouchedLO : cstate.ulButtonTouchedHI;
-          const b = new GamepadButtonLighthouse();
+          const b = new GamepadButton();
           b.pressed = pressed & (1 << i) ? true : false;
           b.touched = touched & (1 << i) ? true : false;
           b.value = 0;
@@ -76,7 +71,7 @@ function setButtonsAndAxes (gamepad,device) {
   else if (isViveHeadset) {
 
     // HTC Vive HMD has a headset button, but doesn't expose controllerState.
-    var b = new GamepadButtonLighthouse();        
+    var b = new GamepadButton();
     b.pressed = undefined;
     if (device.extras) {
       b.pressed = device.extras.ulButtonPressedLO & (1 << 0);
@@ -87,7 +82,7 @@ function setButtonsAndAxes (gamepad,device) {
 
     // HTC Vive HMD has a proximity sensor.  Even if my Props claims not.
     if (1) {
-      var b = new GamepadButtonLighthouse();
+      var b = new GamepadButton();
       b.pressed = undefined;
       if (device.extras) {
         b.pressed = device.extras.bProximitySensorTriggered;

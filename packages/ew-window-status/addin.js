@@ -9,7 +9,7 @@ module.exports = {
       status: {
         optionsForBrowserWindow: {
           title: "Status",
-          width: 600,
+          width: 700,
           height: 420,
           webPreferences: {
             nodeIntegration: true, //for require() //DOABLE browserify

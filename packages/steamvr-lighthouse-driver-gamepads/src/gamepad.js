@@ -1,17 +1,8 @@
 const performance_now = require('performance-now');
+const { Gamepad } = require('webvr-types-constructors')
 const { setButtonsAndAxes } = require('./input')
 const { setPose } = require('./pose')
-
-function GamepadLighthouse () {
-  this.index = 0
-  this.id = ""
-  this.mapping = ""
-  this.connected = false
-  this.buttons = []
-  this.axes = []
-  this.pose = null
-  this.timestamp = 0;
-}
+const { setHaptics } = require('./haptic')
 
 function idFor (device) {
   if (! device.properties) return "Unknown lighthouse device";
@@ -26,11 +17,12 @@ function idFor (device) {
 }
 
 function gamepadFromDevice (device) {
-  var gamepad = new GamepadLighthouse();
+  var gamepad = new Gamepad();
   gamepad.timestamp = performance_now();
   gamepad.id = idFor(device);
   setButtonsAndAxes(gamepad,device);
   setPose(gamepad,device);
+  setHaptics(gamepad,device);
   return gamepad;
 }
 

@@ -1,7 +1,8 @@
-const {React, c, component} = require('./react-bare');
+const {React, c, component, div} = require('./react-bare');
 const ViveBase = require('./ViveBase');
 const ViveController = require('./ViveController');
 const ViveHeadset = require('./ViveHeadset');
+const Haptic = require('./Haptic');
 
 function someViveThing (props) {
   const {pad} = props;
@@ -24,9 +25,10 @@ const InputStatus = component('InputStatus',{
     const cls2 = ((pad.pose && pad.pose.position != null)
                   ? 'gamepad-pose-is-valid '
                   : 'gamepad-pose-is-invalid ');
-    return React.DOM.div({
-      className: 'gamepad-input-status-wrapper '+cls+cls2
-    }, someViveThing(this.props));
+    return div('gamepad-input-status-wrapper '+cls+cls2,{},[
+      someViveThing(this.props),
+      c(Haptic,{pad})
+    ]);
   }
 })
 

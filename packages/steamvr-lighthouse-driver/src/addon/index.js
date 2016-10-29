@@ -38,7 +38,7 @@ TrackedDevice.prototype = {
   },
 };
 function triggerHapticPulse ( axisIndex, pulseDurationMicroseconds ) {
-  addon.triggerHapticPulse(this.trackedDeviceIndex, axisIndex, pulseDurationMicroseconds );
+  addon.controllerTriggerHapticPulse(this.trackedDeviceIndex, axisIndex, pulseDurationMicroseconds );
 }
 function powerOff () {
   addon.powerOff(this.trackedDeviceIndex);

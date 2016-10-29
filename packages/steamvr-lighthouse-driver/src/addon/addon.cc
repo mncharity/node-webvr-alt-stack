@@ -136,9 +136,9 @@ void ControllerTriggerHapticPulse (const Nan::FunctionCallbackInfo<v8::Value>& i
   uint32_t unAxisId = Nan::To<uint32_t>(info[1]).FromJust();
   uint32_t usPulseDurationMicroseconds = Nan::To<uint32_t>(info[2]).FromJust();
   vr::ITrackedDeviceServerDriver *driver = stdp->GetTrackedDeviceDriver(n);
-  if (!driver) return;
+  if (!driver) return Nan::ThrowError("Invalid arguments: invalid device index");
   vr::IVRControllerComponent *controller = (vr::IVRControllerComponent*) driver->GetComponent(vr::IVRControllerComponent_Version);
-  if (!controller) return;
+  if (!controller) return Nan::ThrowError("Invalid arguments: device is not a controller");
   controller->TriggerHapticPulse(unAxisId,usPulseDurationMicroseconds);
 }
 

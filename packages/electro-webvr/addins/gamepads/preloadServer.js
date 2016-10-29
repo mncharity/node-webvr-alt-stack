@@ -20,12 +20,17 @@ function getGamepads () {
   return lighthouseGamepads.state.gamepads;
 }
 
-if (ipcRenderer) // undefined in tests
+if (ipcRenderer) {// undefined in tests
   ipcRenderer.on(channels.serverRequest, (event)=>{
     lighthouseGamepads.update();
     const json = JSON.stringify(lighthouseGamepads.state);
     ipcRenderer.send(channels.serverResponse, json);
   });
+  ipcRenderer.on(channels.pulseRequest, (event,data)=>{
+    const {index,idx,value,duration} = data;
+    lighthouseGamepads.state.gamepads[index].hapticActuators[idx].pulse(value,duration);
+  });
+}
 
 module.exports = {
   pluginE: function ({config,local}) {

@@ -15,3 +15,8 @@ ipcMain.on( channels.serverResponse, (event,data)=>{
   waitinglist = [];
   replyTo.forEach((event)=>{event.returnValue = data});
 })
+
+ipcMain.on( channels.pulseRequest, (event,data) =>{
+  const serverWindow = global.state.windows.main.window;
+  serverWindow.webContents.send(channels.pulseRequest, data);
+});
