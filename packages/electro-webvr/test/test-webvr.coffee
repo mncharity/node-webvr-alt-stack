@@ -15,9 +15,9 @@ describe "getVRDisplays", ->
   it "provides a display", (done) ->
     getVRDisplays().then(
       ((res) ->
-        expect(res).to.be.an 'array'
+        expect(res).to.be.an.instanceof Array
         expect(res.length).to.be.at.least 1
-        expect(res[0].requestPresent).to.be.a 'function'
+        expect(res[0].requestPresent).to.be.an.instanceof Function
         done()),
       (err) -> done(err))
     undefined

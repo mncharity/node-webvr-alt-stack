@@ -26,8 +26,8 @@ function presentationDivCreate (frameColor) {
   const divBackground = div(c_Self+' '+c_Background);
   const divFrame = div(c_Self+' '+c_Frame);
   const divLayers = div(c_Self+' '+c_Layers);
-  const apiVisL = div(c_APIVisibleL);
-  const apiVisR = div(c_APIVisibleR);
+  const apiVisL = div(c_Self+' '+c_APIVisibleL);
+  const apiVisR = div(c_Self+' '+c_APIVisibleR);
   
   ((e)=>{
     const top = Math.round((viveSize.h - visibleSize.h)/2);

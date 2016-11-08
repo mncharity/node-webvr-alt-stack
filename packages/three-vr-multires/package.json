@@ -1,0 +1,30 @@
+{
+  "private": true,
+  "name": "three-vr-multires",
+  "version": "0.0.0",
+  "description": "Render stereo with high-resolution insets",
+  "author": "Mitchell N Charity <mncharity@vendian.org>",
+  "license": "MIT",
+  "main": "build/main.js",
+  "browser": {
+    "three": false
+  },
+  "scripts": {
+    "start": "(cd ../electro-webvr/; ./bin/electro-webvr-unsafe --add ./addins/stats ../three-vr-multires/examples/webvr_cubes.html)",
+    "prepublish": "coffee -o build/ -c ./src && browserify src/bundle.js -o build/bundle.js",
+    "test": "electron-mocha --compilers coffee:coffee-script/register --renderer ./tests/test*.coffee"
+  },
+  "dependencies": {
+    "three": "^0.82.1"
+  },
+  "devDependencies": {
+    "browserify": "^13.1.1",
+    "chai": "^3.5.0",
+    "chai-dom": "^1.4.2",
+    "coffee-script": "^1.11.1",
+    "electro-webvr": "*",
+    "electron": "^1.4.5",
+    "electron-mocha": "^3.1.1",
+    "mocha": "^3.1.2"
+  }
+}

@@ -20,7 +20,7 @@ module.exports = {
           __filename
         ],
         quitOnClose: true,
-        devtools: true,
+        devtools: false,
       }
     }
   }
