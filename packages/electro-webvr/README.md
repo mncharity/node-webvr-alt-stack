@@ -2,7 +2,7 @@ An insecure alternative [WebVR](https://en.wikipedia.org/wiki/WebVR) stack for t
 
 Built on [node.js](https://nodejs.org/)'s [electron](http://electron.atom.io/).  Uses full-screen chromium as the compositor.  Does tracking with Valve's SteamVR [OpenVR](https://github.com/ValveSoftware/openvr) low-level lighthouse [device driver](../steamvr-lighthouse-driver/).
 
-But it's capped at 60 fps.  And has no lens-distortion correction.  The author didn't mind this, but YMMV.
+But it has no lens-distortion correction.  The author didn't mind this, but YMMV.
 
 Why yet another stack?  When it was created in 2016 Q3, there was still no way to use an HTC Vive on Linux.  At all.  Not WebVR, OSVR, SteamVR, Vrui, WebVR-polyfill, nor anything else.  So this app was a placeholder, to permit using my Vive on Linux, until that improved.
 
