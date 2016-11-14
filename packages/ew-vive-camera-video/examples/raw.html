@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Stereo Vive camera video, with no lens correction</title>
+
+<style>
+  #frameVisibleDisplayArea {
+    position:absolute;
+    top:6.2%;left:6.2%;right:6.2%;bottom:6.2%;
+    background-color: #666;
+  }
+  .eye {
+    position:absolute;
+    top:0;
+    width:50%;
+    height:100%;
+    overflow:hidden;
+  }
+  .left {
+    left:0;
+  }
+  .right {
+    right:0;
+  }
+  .video {
+    position:absolute;
+    width:150%;
+    top:22%;
+  }
+  #videoElementL {
+    left:-25%;
+  }
+  #videoElementR {
+    right:-25%;
+  }
+</style>
+</head>
+
+<body>
+<div id="frameVisibleDisplayArea">
+  <div class="left eye">
+    <video class="video" id="videoElementL" autoplay="true"></video>
+  </div>
+  <div class="right eye">
+    <video class="video" id="videoElementR" autoplay="true"></video>
+  </div>
+</div>
+
+<script>
+const videoL = document.querySelector("#videoElementL");
+const videoR = document.querySelector("#videoElementR");
+
+navigator.mediaDevices.enumerateDevices()
+ .then(function (devices){
+   const videoinputs = devices.filter(device => device.kind == "videoinput");
+   const vive = videoinputs.find(device => device.label.match("^MMP SDK"));
+   // const usb = videoinputs.find(device => device.label.match("^USB"));
+
+   const device = vive ? vive : videoinputs[0];
+   if (!vive) console.log("Didn't find Vive videoinput");
+
+   var constraints = {
+     video: {
+       deviceId: {exact: device.deviceId},
+       width: 1920, // 1920 612 480
+     },
+   };
+
+   navigator.mediaDevices.getUserMedia(constraints).then(function(stream) {
+
+     videoL.srcObject = stream;
+     videoR.srcObject = stream;
+
+     // const tracks = stream.getVideoTracks();
+     // console.log(tracks);
+     // console.log(tracks[0].getConstraints());
+     // //console.log(tracks[0].getSettings()); //NI
+     // //console.log(tracks[0].getCapabilities()); //NI
+   })
+   .catch(function(error){console.log(error)});
+ })
+ .catch(function (error){console.log(error)});
+
+</script>
+</body>
+</html>

@@ -1,0 +1,20 @@
+{
+  "private": true,
+  "name": "ew-vive-camera-video",
+  "version": "0.0.0",
+  "description": "",
+  "author": "Mitchell N Charity <mncharity@vendian.org>",
+  "license": "MIT",
+  "main": "addin.js",
+  "scripts": {
+    "demo-alpha": "(cd ../electro-webvr/; ./bin/electro-webvr-unsafe --add ./addins/stats --add ../ew-vive-camera-video --opt.headsetCamera.back=true ../three-vr-multires/examples/webvr_cubes.html#alpha:true)",
+    "demo-footer": "(cd ../electro-webvr/; ./bin/electro-webvr-unsafe --add ./addins/stats --add ../ew-vive-camera-video --opt.headsetCamera.footer=true ../three-vr-multires/examples/webvr_cubes.html)",
+    "demo-raw": "(cd ../electro-webvr/; ./bin/electro-webvr-unsafe ../ew-vive-camera-video/examples/raw.html)"
+  },
+  "dependencies": {
+    "three": "^0.82.1",
+    "vive-camera-stream": "*"
+  },
+  "devDependencies": {
+  }
+}

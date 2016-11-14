@@ -243,6 +243,7 @@ proto =
       sh = dh = block.height
       dx = dy = 0
       dst = canvas.getContext('2d')
+      dst.clearRect(0, 0, canvas.width, canvas.height);
       dst.drawImage(src, sx, sy, sw, sh, dx, dy, dw, dh)
 
 

@@ -30,6 +30,7 @@
     "stats.js": "^0.16.0",
     "steamvr-lighthouse-driver-gamepads": "*",
     "tmp": "0.0.29",
+    "traverse": "^0.6.6",
     "vrdisplay-parts": "*",
     "webvr-types-constructors": "*"
   },

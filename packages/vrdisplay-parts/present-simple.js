@@ -7,6 +7,8 @@ const visibleSize = {w: Math.round(viveSize.w * visibleArea),
 
 const c_APIVisibleL = 'vrdisplay--visible-area-left';
 const c_APIVisibleR = 'vrdisplay--visible-area-right';
+const c_APIVisibleBack = 'vrdisplay--visible-area-back';
+const c_APIVisibleFront = 'vrdisplay--visible-area-front';
 
 const c_Self = 'present-simple';
 const c_Background =  'presentation-background';
@@ -26,19 +28,21 @@ function presentationDivCreate (frameColor) {
   const divBackground = div(c_Self+' '+c_Background);
   const divFrame = div(c_Self+' '+c_Frame);
   const divLayers = div(c_Self+' '+c_Layers);
-  const apiVisL = div(c_Self+' '+c_APIVisibleL);
-  const apiVisR = div(c_Self+' '+c_APIVisibleR);
+  const apiVisL = div(c_Self+' '+c_APIVisibleL+' '+c_APIVisibleFront);
+  const apiVisR = div(c_Self+' '+c_APIVisibleR+' '+c_APIVisibleFront);
+  const apiVisLb = div(c_Self+' '+c_APIVisibleL+' '+c_APIVisibleBack);
+  const apiVisRb = div(c_Self+' '+c_APIVisibleR+' '+c_APIVisibleBack);
   
-  ((e)=>{
-    const top = Math.round((viveSize.h - visibleSize.h)/2);
-    const left = Math.round((viveSize.w - visibleSize.w)/2);
-    const right = viveSize.w - visibleSize.w - left;
-    const bottom = viveSize.h - visibleSize.h - top;
-    e.style.top = top+"px";
-    e.style.left = left+"px";
-    e.style.right = right+"px";
-    e.style.bottom = bottom+"px";
-  })(divFrame);
+  if (true) {
+    let top = Math.round((viveSize.h - visibleSize.h)/2);
+    let left = Math.round((viveSize.w - visibleSize.w)/2);
+    let right = viveSize.w - visibleSize.w - left;
+    let bottom = viveSize.h - visibleSize.h - top;
+    divFrame.style.top = top+"px";
+    divFrame.style.left = left+"px";
+    divFrame.style.right = right+"px";
+    divFrame.style.bottom = bottom+"px";
+  }
 
   const style = document.createElement('style');
   const css = (`
@@ -50,12 +54,12 @@ function presentationDivCreate (frameColor) {
              }
              `+'.'+c_Self+'.'+c_Frame+` {
                position: absolute;
-               // set by code: top left bottom right
-               background-color: gray;
+               /* top left bottom right - are set by code */
+               background-color: #000;
              }
              `+'.'+c_Self+'.'+c_Layers+` {
                position: absolute;
-               z-index: 0; //Create stacking context for layers.
+               z-index: 1; /* Create stacking context for layers. */
                left:0; top:0;
                width: 100%;
                height: 100%;
@@ -69,20 +73,27 @@ function presentationDivCreate (frameColor) {
              }
              `+'.'+c_Self+'.'+c_APIVisibleL+` {
                position: absolute;
-               z-index: 1;
+               z-index: 2;
                width: 50%;
                height: 100%;
+               overflow: hidden;
              }
              `+'.'+c_Self+'.'+c_APIVisibleR+` {
                position: absolute;
-               z-index: 1;
-               right:0; top:0;
+               z-index: 2;
+               right:0;
                width: 50%;
                height: 100%;
+               overflow: hidden;
+             }
+             `+'.'+c_Self+'.'+c_APIVisibleBack+` {
+               z-index: 0;
              }
              `);
   style.appendChild(document.createTextNode(css));
 
+  divFrame.appendChild(apiVisLb);
+  divFrame.appendChild(apiVisRb);
   divFrame.appendChild(divLayers);
   divFrame.appendChild(apiVisL);
   divFrame.appendChild(apiVisR);

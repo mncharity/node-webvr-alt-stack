@@ -6,7 +6,7 @@ class StatsOnVR {
     this.stats.showPanel( mode );// 0: fps, 1: ms, 2: mb, 3+: custom
     this.stats.dom.style = style;
     this.placePanel = (()=>{
-      var parent = document.getElementsByClassName('vrdisplay--visible-area-left')[0];
+      var parent = document.getElementsByClassName('vrdisplay--visible-area-left vrdisplay--visible-area-front')[0];
       if (!parent) parent = document.body;
       parent.appendChild( this.stats.dom );
     }).bind(this);

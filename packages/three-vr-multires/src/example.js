@@ -52,6 +52,7 @@ if(true){
       renderer = new THREE.WebGLRenderer({
         canvas: multires.rendererCanvas,
         antialias: true,
+        alpha: window.location.href.search("alpha:true") >=0,
       });
       renderer.autoClear = false;
 
@@ -68,9 +69,9 @@ if(true){
       // Do not include in README.md Usage.
       // To see the entire canvas for debugging,
       // comment out requestPresent, and uncomment the following:
-      //document.body.appendChild(multires.domElement.childNodes[0])
-      //multires.canvas.style.width = '500px';
-      //multires.canvas.style.height = '500px';
+      //const canvas = document.body.appendChild(multires.domElement.childNodes[0])
+      //canvas.style.width = '500px';
+      //canvas.style.height = '500px';
     }
 
     function render () {

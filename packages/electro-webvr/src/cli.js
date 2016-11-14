@@ -1,5 +1,6 @@
 const { resolve } = require('require-relative');
 const minimist = require('minimist');
+const traverse = require('traverse');
 const deepmerge = require('deepmerge');
 const { loadModules } = require('./loadModules');
 
@@ -14,6 +15,10 @@ function configFromCLI (options) {
   if (trimElectron) args = _trimElectronInvocationArgs(args);
 
   const argo = minimist(args);
+  traverse(argo).forEach(function (value) {
+    if (value == 'false') this.update(false);
+    if (value == 'true') this.update(true);
+  });
 
   // URL
 
